@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blackbird Industries — Stratosphere Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Barlow+Condensed:wght@200;300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000000;
+      --offblack: #0a0a0a;
+      --white: #ffffff;
+      --offwhite: #e8e8e8;
+      --dim: rgba(255,255,255,0.45);
+      --accent: #c8a96e;
+      --blue: #4a9eff;
+      --condensed: 'Barlow Condensed', sans-serif;
+      --body: 'Barlow', sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 20px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-logo {
+      font-family: var(--condensed);
+      font-size: 15px; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--white); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex; gap: 36px; align-items: center;
+    }
+
+    .nav-link {
+      font-family: var(--condensed);
+      font-size: 13px; font-weight: 400;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-link:hover { color: white; }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: var(--black);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(20,50,120,0.12) 0%, transparent 70%),
+        linear-gradient(180deg, #000000 0%, #040d14 50%, #000000 100%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100px 100px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      text-align: center;
+      padding: 0 40px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 32px;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.5s;
+    }
+
+    .hero-title {
+      font-family: var(--condensed);
+      font-size: clamp(56px, 9vw, 130px);
+      font-weight: 200;
+      line-height: 1; letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.7s;
+    }
+
+    .hero-title em {
+      font-style: normal; font-weight: 600;
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.8vw, 20px);
+      font-weight: 200; letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.5);
+      margin-top: 28px; margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+      max-width: 600px; margin-left: auto; margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .hero-tagline {
+      font-family: var(--condensed);
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0; animation: fadeUp 1s ease forwards 1.1s;
+      margin-top: 0; margin-bottom: 0;
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      opacity: 0; animation: fadeIn 1s ease forwards 1.8s;
+    }
+    .scroll-bar {
+      width: 1px; height: 40px;
+      background: linear-gradient(180deg, white, transparent);
+      animation: scrollAnim 2s ease-in-out infinite;
+    }
+    @keyframes scrollAnim {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ===== PROBLEM ===== */
+    .problem {
+      background: var(--black);
+      min-height: 100vh;
+      height: auto;
+      overflow: visible;
+      justify-content: center;
+      padding: 120px 40px;
+    }
+
+    .problem-inner {
+      max-width: 900px;
+    }
+
+    .section-tag {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 48px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .section-tag::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 1px; background: var(--accent);
+    }
+
+    .problem-stat {
+      font-family: var(--condensed);
+      font-size: clamp(80px, 14vw, 180px);
+      font-weight: 600; line-height: 0.9;
+      letter-spacing: -0.01em;
+      color: white;
+    }
+
+    .problem-stat span {
+      color: var(--accent);
+    }
+
+    .problem-line {
+      font-family: var(--condensed);
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 200; letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.7);
+      margin-top: 24px; line-height: 1.2;
+    }
+
+    .problem-line strong {
+      font-weight: 500; color: white;
+    }
+
+    .problem-body {
+      font-size: 16px; line-height: 1.9;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300; letter-spacing: 0.02em;
+      margin-top: 48px; max-width: 560px;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      padding-left: 32px;
+    }
+
+    /* ===== VEHICLE ===== */
+    .vehicle {
+      background: var(--offblack);
+      min-height: 100vh;
+      justify-content: center;
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px; align-items: center;
+      max-width: 1200px;
+    }
+
+    .vehicle-left h2 {
+      font-family: var(--condensed);
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 200; line-height: 1.05;
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+
+    .vehicle-left h2 strong {
+      font-weight: 600; display: block;
+      color: white;
+    }
+
+    .vehicle-left p {
+      font-size: 16px; line-height: 1.9;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300; margin-top: 32px;
+      max-width: 440px;
+    }
+
+    .vehicle-right {
+      display: flex; flex-direction: column; gap: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .spec-row {
+      background: var(--offblack);
+      padding: 28px 32px;
+      display: flex; justify-content: space-between; align-items: baseline;
+      transition: background 0.3s;
+    }
+    .spec-row:hover { background: rgba(255,255,255,0.03); }
+
+    .spec-label {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+    }
+
+    .spec-value {
+      font-family: var(--condensed);
+      font-size: 28px; font-weight: 500;
+      letter-spacing: 0.02em; color: white;
+    }
+    .spec-value span { color: var(--accent); font-size: 16px; }
+
+    /* ===== PLANE BREAK ===== */
+    .plane-break {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .plane-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.85;
+      filter: brightness(0.9) contrast(1.05);
+    }
+
+    .plane-break-label {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ===== MARKET ===== */
+    .market {
+      background: var(--black);
+      min-height: 100vh;
+      justify-content: center;
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .market-inner { max-width: 1200px; width: 100%; }
+
+    .market-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; margin-bottom: 80px;
+      align-items: end;
+    }
+
+    .market-header h2 {
+      font-family: var(--condensed);
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 200; line-height: 1.0;
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .market-header h2 strong { font-weight: 600; }
+
+    .market-header p {
+      font-size: 16px; line-height: 1.9;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+    }
+
+    .market-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.06);
+    }
+
+    .market-card {
+      background: var(--black);
+      padding: 48px 40px;
+      transition: background 0.3s;
+      position: relative;
+    }
+    .market-card:hover { background: rgba(255,255,255,0.02); }
+
+    .market-card-num {
+      font-family: var(--condensed);
+      font-size: 56px; font-weight: 600;
+      color: var(--accent); line-height: 1;
+      margin-bottom: 8px;
+    }
+    .market-card-num span { font-size: 28px; }
+
+    .market-card-title {
+      font-family: var(--condensed);
+      font-size: 22px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 16px; color: white;
+    }
+
+    .market-card-desc {
+      font-size: 14px; line-height: 1.85;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+    }
+
+    /* ===== SERVICES ===== */
+    .services {
+      background: var(--offblack);
+      min-height: 100vh;
+      justify-content: center;
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .services-inner { max-width: 1200px; width: 100%; }
+
+    .services-title {
+      font-family: var(--condensed);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 200; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 80px;
+    }
+    .services-title strong { font-weight: 600; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.06);
+    }
+
+    .service-card {
+      background: var(--offblack);
+      padding: 48px 40px 52px;
+      position: relative; overflow: hidden;
+      transition: background 0.4s;
+    }
+    .service-card:hover { background: rgba(255,255,255,0.02); }
+
+    .service-num {
+      font-family: var(--condensed);
+      font-size: 100px; font-weight: 700;
+      color: rgba(255,255,255,0.35);
+      line-height: 1; margin-bottom: 32px;
+      letter-spacing: -0.02em;
+    }
+
+    .service-icon {
+      width: 40px; height: 1px;
+      background: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .service-title {
+      font-family: var(--condensed);
+      font-size: 26px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 16px; color: white;
+    }
+
+    .service-desc {
+      font-size: 14px; line-height: 1.9;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    .service-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 24px;
+    }
+
+    .service-tag {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(200,169,110,0.25);
+      padding: 4px 10px;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how {
+      background: var(--black);
+      min-height: 100vh;
+      justify-content: center;
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .how-title {
+      font-family: var(--condensed);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 200; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 80px;
+    }
+    .how-title strong { font-weight: 600; }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.06);
+    }
+
+    .how-step {
+      background: var(--black);
+      padding: 48px 40px 52px;
+      position: relative; overflow: hidden;
+      transition: background 0.4s;
+    }
+    .how-step:hover { background: rgba(255,255,255,0.02); }
+
+    .step-number {
+      font-family: var(--condensed);
+      font-size: 100px; font-weight: 700;
+      color: rgba(255,255,255,0.35);
+      line-height: 1; margin-bottom: 32px;
+      letter-spacing: -0.02em;
+    }
+
+    .step-title {
+      font-family: var(--condensed);
+      font-size: 26px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 16px; color: white;
+    }
+
+    .step-desc {
+      font-size: 14px; line-height: 1.9;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    .step-icon {
+      width: 40px; height: 1px;
+      background: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    /* ===== COVERAGE METRICS ===== */
+    .coverage {
+      background: var(--offblack);
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      min-height: auto;
+    }
+
+    .coverage-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.06);
+    }
+
+    .coverage-item {
+      background: var(--offblack);
+      padding: 56px 40px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    .coverage-item:hover { background: rgba(255,255,255,0.02); }
+
+    .coverage-num {
+      font-family: var(--condensed);
+      font-size: 72px; font-weight: 600;
+      line-height: 1; letter-spacing: -0.01em;
+    }
+    .coverage-num span { color: var(--accent); font-size: 40px; }
+
+    .coverage-label {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.25em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      margin-top: 12px;
+    }
+
+    /* ===== TEAM ===== */
+    .team {
+      background: var(--black);
+      min-height: auto;
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .team-inner { max-width: 1200px; width: 100%; }
+
+    .team-header {
+      margin-bottom: 80px;
+    }
+
+    .team-header h2 {
+      font-family: var(--condensed);
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 200; line-height: 1;
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .team-header h2 strong { font-weight: 600; }
+
+    .team-header p {
+      font-size: 16px; line-height: 1.9;
+      color: rgba(255,255,255,0.35);
+      font-weight: 300; margin-top: 20px;
+      max-width: 500px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.06);
+    }
+
+    .team-card {
+      background: var(--black);
+      padding: 56px 40px;
+      transition: background 0.3s;
+      position: relative;
+    }
+    .team-card:hover { background: rgba(255,255,255,0.02); }
+
+    .team-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.12);
+      border: 1px solid rgba(200,169,110,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--condensed);
+      font-size: 22px; font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 32px;
+      letter-spacing: 0.05em;
+    }
+
+    .team-name {
+      font-family: var(--condensed);
+      font-size: 28px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: white; margin-bottom: 6px;
+    }
+
+    .team-role {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .team-bio {
+      font-size: 14px; line-height: 1.85;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+    }
+
+    .team-link {
+      display: inline-block;
+      margin-top: 24px;
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 3px;
+      transition: all 0.3s;
+    }
+    .team-link:hover { color: white; border-color: white; }
+
+    /* ===== CONTACT ===== */
+    .contact-section {
+      background: var(--offblack);
+      min-height: auto;
+      padding: 120px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      justify-content: center; align-items: flex-start;
+    }
+
+    .contact-inner {
+      display: flex; flex-direction: column; align-items: flex-start;
+      width: 100%; max-width: 1200px; gap: 40px;
+    }
+
+    .contact-left h2 {
+      font-family: var(--condensed);
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 200; letter-spacing: 0.03em;
+      text-transform: uppercase; line-height: 1;
+    }
+    .contact-left h2 strong { font-weight: 600; }
+
+    .contact-left p {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      margin-top: 16px;
+    }
+
+    .contact-row {
+      display: flex; gap: 80px; flex-wrap: wrap;
+    }
+
+    .contact-person {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .contact-person-name {
+      font-family: var(--condensed);
+      font-size: 16px; font-weight: 500;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 4px;
+    }
+
+    .contact-links {
+      display: flex; flex-direction: column;
+      align-items: flex-start; gap: 10px;
+    }
+
+    .contact-link {
+      font-family: var(--mono);
+      font-size: 13px; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4); text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 4px;
+      transition: all 0.3s;
+    }
+    .contact-link:hover { color: white; border-color: white; }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      padding: 28px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .footer-logo {
+      font-family: var(--condensed);
+      font-size: 13px; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .footer-right {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.15); text-transform: uppercase;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    .reveal, .reveal.visible {
+      opacity: 1; transform: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-link { font-size: 11px; }
+
+      section { min-height: auto; padding: 80px 20px; }
+      .hero { min-height: 100vh; padding: 80px 20px; }
+
+      .vehicle { padding: 80px 20px; }
+      .vehicle-grid { grid-template-columns: 1fr; gap: 48px; }
+
+      .market { padding: 80px 20px; }
+      .market-header { grid-template-columns: 1fr; gap: 32px; }
+      .market-cards { grid-template-columns: 1fr; }
+
+      .services { padding: 80px 20px; }
+      .services-grid { grid-template-columns: 1fr; }
+
+      .how { padding: 80px 20px; }
+      .how-steps { grid-template-columns: 1fr; }
+
+      .coverage { padding: 60px 20px; }
+      .coverage-inner { grid-template-columns: repeat(2, 1fr); }
+
+      .team { padding: 80px 20px; }
+      .team-grid { grid-template-columns: 1fr; }
+
+      .contact-section { padding: 80px 20px; }
+      .contact-row { gap: 40px; }
+
+      footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links .nav-link:not(:last-child) { display: none; }
+      .coverage-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">BLACKBIRD <span>INDUSTRIES</span></a>
+  <div class="nav-links">
+    <a href="#vehicle" class="nav-link">Vehicle</a>
+    <a href="#market" class="nav-link">Market</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Blackbird Industries — Stratospheric Platform</div>
+    <h1 class="hero-title">
+      The Starship<br>
+      <em>of the Stratosphere.</em>
+    </h1>
+    <p class="hero-subtitle">Solar-hydrogen hybrid airships, flying permanently at 20 km altitude. A new layer of infrastructure between satellites and the ground — cheaper, closer, better.</p>
+    <div class="hero-tagline">60% of the satellite market. Done better. From 20km.</div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-bar"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- PLANE BREAK -->
+<div class="plane-break">
+  <img src="./haps_ship_1.webp" alt="Blackbird Stratospheric Airship" class="plane-img"/>
+  <div class="plane-break-label">BLACKBIRD INDUSTRIES — STRATOSPHERIC PLATFORM</div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="problem-inner">
+    <div class="section-tag">The Opportunity</div>
+    <div class="problem-stat">60<span>%</span></div>
+    <div class="problem-line">
+      of the satellite market <strong>done significantly better</strong><br>
+      from 20km — not 500km.
+    </div>
+    <div class="problem-body">
+      LEO satellites fly at 500km. We fly at 20km — 25× closer to Earth. That means dramatically higher resolution, lower latency, continuous downlink, and the ability to land, upgrade your payload, and fly again. The stratosphere is the most underutilised platform in aerospace.
+    </div>
+  </div>
+</section>
+
+<!-- VEHICLE -->
+<section class="vehicle" id="vehicle">
+  <div class="vehicle-grid">
+    <div class="vehicle-left">
+      <div class="section-tag reveal">The Vehicle</div>
+      <h2 class="reveal reveal-delay-1">
+        Solar-Hydrogen<br>
+        <strong>Hybrid Airship</strong>
+      </h2>
+      <p class="reveal reveal-delay-2">
+        A buoyant stratospheric platform with aircraft wings for active wind-fighting and precise station-keeping — the true hybrid. Solar panels power the vehicle during the day; hydrogen fuel cells carry it through the night. Lighter than air, yet with the manoeuvrability of a fixed-wing aircraft. The persistent infrastructure layer the stratosphere has been waiting for.
+      </p>
+    </div>
+    <div class="vehicle-right reveal reveal-delay-1">
+      <div class="spec-row">
+        <span class="spec-label">Operating Altitude</span>
+        <span class="spec-value">20,000 <span>m</span></span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Propulsion</span>
+        <span class="spec-value">Solar <span>+ Hydrogen</span></span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Coverage per Node</span>
+        <span class="spec-value">500 <span>km radius</span></span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Mission Duration</span>
+        <span class="spec-value">∞ <span>perpetual</span></span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Vs LEO Altitude</span>
+        <span class="spec-value">25<span>× closer</span></span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Landing Cadence</span>
+        <span class="spec-value">On <span>demand</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- MARKET -->
+<section class="market" id="market">
+  <div class="market-inner">
+    <div class="market-header">
+      <h2 class="reveal">Why the<br><strong>Stratosphere</strong></h2>
+      <p class="reveal reveal-delay-1">At 20km altitude, physics works in our favour across every major application that satellites currently dominate. Higher resolution. Lower latency. Continuous line of sight. Reusable and upgradeable.</p>
+    </div>
+    <div class="market-cards">
+      <div class="market-card reveal">
+        <div class="market-card-num">25<span>×</span></div>
+        <div class="market-card-title">Higher Resolution Imaging</div>
+        <div class="market-card-desc">25× closer to the ground than LEO means imagery with dramatically higher resolution for the same sensor — transforming earth observation, precision agriculture, and defence ISR.</div>
+      </div>
+      <div class="market-card reveal reveal-delay-1">
+        <div class="market-card-num">&lt;5<span>ms</span></div>
+        <div class="market-card-title">Ultra-Low Latency</div>
+        <div class="market-card-desc">Stratospheric altitude delivers near-zero latency for communications, surveillance, and data relay — better than LEO for time-critical applications including defence and financial data.</div>
+      </div>
+      <div class="market-card reveal reveal-delay-2">
+        <div class="market-card-num">24<span>/7</span></div>
+        <div class="market-card-title">Continuous Downlink</div>
+        <div class="market-card-desc">Unlike satellites in orbit that pass overhead for minutes at a time, our platform stations continuously above your region — delivering uninterrupted downlink on demand, forever.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="section-tag reveal">What We Offer</div>
+    <div class="services-title reveal reveal-delay-1">
+      Three Ways We <strong>Serve</strong>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-icon"></div>
+        <div class="service-title">Defence & Surveillance</div>
+        <div class="service-desc">Persistent stratospheric ISR and communications for defence forces. Continuous overwatch, high-resolution imaging, and secure data relay — without the vulnerability of satellites or the limitations of drones. Always overhead. Never blind.</div>
+        <div class="service-tags">
+          <span class="service-tag">ISR</span>
+          <span class="service-tag">Comms Relay</span>
+          <span class="service-tag">Persistent Overwatch</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-icon"></div>
+        <div class="service-title">Stratospheric Rideshare</div>
+        <div class="service-desc">Deploy your sensor, camera, or communications payload on our platform. Fly at 20km for higher resolution and continuous downlink. Land when you want to upgrade. Fly again. The economics and performance of a dedicated mission — without building the vehicle.</div>
+        <div class="service-tags">
+          <span class="service-tag">Payload Hosting</span>
+          <span class="service-tag">Land & Upgrade</span>
+          <span class="service-tag">Continuous Downlink</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-icon"></div>
+        <div class="service-title">Laser 6G / 7G Internet</div>
+        <div class="service-desc">High-speed internet broadcast via laser communications directly from the stratosphere. Lower latency than satellite. Higher bandwidth. Reaching the 2.6 billion people that existing towers and satellites have failed to connect — at costs that actually make sense.</div>
+        <div class="service-tags">
+          <span class="service-tag">Laser Comms</span>
+          <span class="service-tag">6G / 7G</span>
+          <span class="service-tag">Global Coverage</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-title reveal">
+    How It <strong>Works</strong>
+  </div>
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <div class="step-number">01</div>
+      <div class="step-icon"></div>
+      <div class="step-title">Ascent</div>
+      <div class="step-desc">The airship ascends to stratospheric altitude — above weather, above turbulence — where solar irradiance is constant and conditions are stable. Hydrogen buoyancy reduces energy cost to near zero.</div>
+    </div>
+    <div class="how-step reveal reveal-delay-1">
+      <div class="step-number">02</div>
+      <div class="step-icon"></div>
+      <div class="step-title">Station Keep</div>
+      <div class="step-desc">AI-driven controls maintain precise station above the target region against jet stream winds. Solar energy harvested during the day electrolytically produces hydrogen for night operations — a closed energy loop.</div>
+    </div>
+    <div class="how-step reveal reveal-delay-2">
+      <div class="step-number">03</div>
+      <div class="step-icon"></div>
+      <div class="step-title">Operate & Broadcast</div>
+      <div class="step-desc">Payloads operate continuously — imaging, sensing, communicating, broadcasting. When an upgrade is needed, the platform descends on demand, swaps payloads on the ground, and re-ascends within hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE METRICS -->
+<section class="coverage" style="min-height:auto; display:block;">
+  <div class="coverage-inner">
+    <div class="coverage-item reveal">
+      <div class="coverage-num">20<span>km</span></div>
+      <div class="coverage-label">Operating Altitude</div>
+    </div>
+    <div class="coverage-item reveal reveal-delay-1">
+      <div class="coverage-num">25<span>×</span></div>
+      <div class="coverage-label">Closer than LEO</div>
+    </div>
+    <div class="coverage-item reveal reveal-delay-2">
+      <div class="coverage-num">500<span>km</span></div>
+      <div class="coverage-label">Coverage Radius</div>
+    </div>
+    <div class="coverage-item reveal reveal-delay-3">
+      <div class="coverage-num">60<span>%</span></div>
+      <div class="coverage-label">Satellite Market Addressable</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="section-tag reveal">Get In Touch</div>
+      <h2 class="reveal reveal-delay-1">Let's<br><strong>Connect</strong></h2>
+      <p class="reveal reveal-delay-2">Partnerships · Defence · Rideshare · Research · Media</p>
+    </div>
+    <div class="contact-links reveal reveal-delay-2">
+      <a href="mailto:chaitanya@blackbirdindustries.in" class="contact-link">chaitanya@blackbirdindustries.in</a>
+      <a href="https://www.linkedin.com/in/chaitanya-keshri/" target="_blank" class="contact-link">LinkedIn ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo
